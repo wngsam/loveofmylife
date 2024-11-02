@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Loves Zoe</title>
+    <title>3D Heart Animation with Depth Grid</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
@@ -15,18 +16,34 @@
             background-color: #000000;
             font-family: 'Orbitron', sans-serif;
             overflow: hidden;
+            perspective: 1000px;
         }
 
         .grid {
             position: absolute;
             top: 0;
+            left: 50%;
+            transform: translateX(-50%) rotateX(60deg); /* 3D rotation */
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(200, 200, 200, 0.5) 1px, transparent 1px), /* Brighten grid lines */
+                linear-gradient(90deg, rgba(200, 200, 200, 0.5) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.8;
+            animation: slideDown 10s linear infinite; /* Animate for depth effect */
+            z-index: 1;
+        }
+
+        /* Fading gradient for depth */
+        .grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 60px 60px;
-            opacity: 0.5;
+            background: linear-gradient(to top, transparent, black 50%);
             pointer-events: none;
         }
 
@@ -37,7 +54,6 @@
             animation: heartbeat 1.5s infinite;
             position: relative;
             z-index: 3;
-            transform-origin: center;
         }
 
         .heart path {
@@ -54,6 +70,12 @@
             z-index: 2;
         }
 
+        .text-top, .text-main, .text-sub {
+            text-align: center;
+            position: relative;
+            z-index: 4;
+        }
+
         .text-top {
             margin-bottom: 140px;
             font-size: 42px;
@@ -61,32 +83,26 @@
             -webkit-background-clip: text;
             color: transparent;
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 0 18px rgba(255, 204, 153, 0.3), 0 0 22px rgba(255, 153, 102, 0.2);
-            position: relative;
-            z-index: 4;
         }
 
         .text-main {
             margin-top: 100px;
-            font-size: 84px; /* Increased font size */
+            font-size: 84px;
             background: linear-gradient(90deg, #ff66b2, #ff3385);
             -webkit-background-clip: text;
             color: transparent;
             text-transform: uppercase;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 102, 178, 0.5), 0 0 40px rgba(255, 102, 178, 0.4);
             letter-spacing: 3px;
-            position: relative;
-            z-index: 4;
         }
 
         .text-sub {
             margin-top: 40px;
-            font-size: 42px; /* Increased font size */
+            font-size: 42px;
             background: linear-gradient(90deg, #ffcc99, #ff9966);
             -webkit-background-clip: text;
             color: transparent;
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 0 18px rgba(255, 204, 153, 0.3), 0 0 22px rgba(255, 153, 102, 0.2);
-            position: relative;
-            z-index: 4;
         }
 
         @keyframes explosion {
@@ -108,6 +124,15 @@
             10%, 30%, 50%, 70%, 90% {
                 transform: scale(1.1);
                 filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.4));
+            }
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateX(-50%) rotateX(60deg) translateY(0);
+            }
+            100% {
+                transform: translateX(-50%) rotateX(60deg) translateY(80px); /* Adds depth effect */
             }
         }
     </style>
@@ -166,7 +191,6 @@
             }
         }
 
-        // Trigger the explosion continuously every 0.7 seconds
         setInterval(explodeHeart, 700);
     </script>
 </body>
